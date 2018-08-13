@@ -1,5 +1,10 @@
 package base;
 
+/**
+ * 利用wait()和notify()方法，在应用层面实现suspend()和resume()功能的例子
+ * 
+ * @author dalongm
+ */
 public class GoodSuspend {
 	public static Object u = new Object();
 
@@ -20,6 +25,8 @@ public class GoodSuspend {
 		@Override
 		public void run() {
 			while (true) {
+				
+				// 检查自己是否被挂起
 				synchronized (this) {
 					while (suspendme) {
 						try {
