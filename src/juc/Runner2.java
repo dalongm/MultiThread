@@ -1,15 +1,20 @@
 package juc;
 
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A B C finished before D E F
  * 
  * @author dalongm
  */
-public class Runner implements Runnable{
+public class Runner2 implements Runnable{
 	
-	public static ReentrantLock lock = new ReentrantLock();
+	private static CountDownLatch end;
+	
+	public Runner2(int count) {
+		end = new CountDownLatch(count);
+	}
+	
 	@Override
 	public void run() {
 		try {
@@ -18,10 +23,11 @@ public class Runner implements Runnable{
 			e.printStackTrace();
 		}
 		System.out.println(Thread.currentThread().getName()+" is running");
+		end.countDown();
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
-		Runner run = new Runner();
+		Runner2 run = new Runner2(3);
 		Thread t1 = new Thread(run,"A");
 		Thread t2 = new Thread(run,"B");
 		Thread t3 = new Thread(run,"C");
@@ -32,9 +38,7 @@ public class Runner implements Runnable{
 		t2.start();
 		t3.start();
 		
-		t1.join();
-		t2.join();
-		t3.join();
+		end.await();
 		
 		t4.start();
 		t5.start();
