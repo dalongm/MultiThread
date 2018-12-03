@@ -1,4 +1,4 @@
-package threadpool;
+package atomic;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
